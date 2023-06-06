@@ -1,0 +1,147 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@900&family=Open+Sans:wght@300&display=swap');
+
+html {
+  scroll-behavior: smooth;
+  transition: all 8s ease-out;
+}
+
+body {
+  background-color: #cacdd4;
+}
+
+a#contactBtn {
+  display: inline-block;
+  font-family: 'Lato', sans-serif;  
+  border: 1px solid #000000;
+  background-color: #2e2c2c;
+  padding: 0.1em 0.4em;
+  color: #cacdd4;
+  transition: 0.5s ease-in;  
+}
+a#contactBtn:hover {
+  color: #ffffff;  
+}
+
+#sendBtn {
+  transition: 0.3s ease-in;
+}
+
+.App {
+  width: 100%;
+  text-align: center;
+  margin: 0;
+}
+
+.content {      
+  min-height: 100vh;  
+  color: #000;
+  animation: fadein ease 5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;    
+}
+.contact {
+  min-height: 100vh;
+  background-color: #24292E;
+}
+
+.slide {
+  animation: pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  z-index: 999;
+}
+
+.box > h1 {  
+  font-family: 'Lato', sans-serif;
+  font-weight: 900;  
+  letter-spacing: 2.5px;  
+  text-shadow: -2px 0 #0d0d0d, 0 2px #0d0d0d, 1px 0 #0d0d0d, 0 -1px #0d0d0d;  
+}
+
+.box > h2 {  
+  font-family: 'Open Sans', sans-serif;  
+  color: #2e2c2c;
+}
+
+.box > h2 > span {
+  color: #f00a0a;
+  animation: darkpulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.socials {
+  animation: bounce 1s infinite;
+  transition: animation-duration 300ms;
+}
+.socials:hover {
+  animation-play-state: paused;
+}
+
+.socials > .icon {
+  margin: 0 0.2em;  
+}
+
+.socials > .icon  > i {    
+  color: #5f5d5d;
+  transition: 0.5s ease-in-out;
+}
+
+i.fa-facebook:hover {
+  color: #1877F2;
+}
+
+i.fa-twitter:hover {
+  color: #1DA1F2;
+}
+
+i.fa-linkedin:hover {
+  color: #0A66C2;
+}
+
+i.fa-github:hover {
+  color: #24292E;
+}
+
+i.fa-npm:hover {
+  color: #E60023;
+}
+
+.grecaptcha-badge {  
+  /* display: none !important; */
+}
+
+@keyframes fadein {
+  0% {
+      opacity: 0;
+  }
+  100% {
+      opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .8;
+  }
+}
+
+@keyframes darkpulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .7;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-5%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.1, 1);
+  }
+}
