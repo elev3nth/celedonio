@@ -8,9 +8,7 @@ import './App.css';
 
 function App() {
  
-  const ReCaptchaKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
-  const ReCaptchaScr = process.env.REACT_APP_RECAPTCHA_SECRET_KEY;
-  const RecatchaTken = useRef(null);
+  const ReCaptchaKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY;  
   
   const [enquiryEmail, setEnquiryEmail] = useState("");
   const [enquirySubject, setEnquirySubject] = useState("");
