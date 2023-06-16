@@ -104,10 +104,6 @@ i.fa-npm:hover {
   color: #E60023;
 }
 
-.grecaptcha-badge {  
-  /* display: none !important; */
-}
-
 @keyframes fadein {
   0% {
       opacity: 0;

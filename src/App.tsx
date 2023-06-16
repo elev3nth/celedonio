@@ -1,22 +1,31 @@
 import React, { 
-  useState
+  useState, useRef, useEffect 
 } from 'react';
+import ReCAPTCHA from "react-google-recaptcha";
 import Axios from 'axios';
 import './App.css';
 
-function App() {
-  
 
+function App() {
+ 
+  const ReCaptchaKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
+  const ReCaptchaScr = process.env.REACT_APP_RECAPTCHA_SECRET_KEY;
+  const RecatchaTken = useRef(null);
+  
   const [enquiryEmail, setEnquiryEmail] = useState("");
   const [enquirySubject, setEnquirySubject] = useState("");
-  const [enquiryMessage, setEnquiryMessage] = useState("");
-
+  const [enquiryMessage, setEnquiryMessage] = useState("");   
+  const [enquiryToken, setEnquiryToken] = useState((value) => {
+    return value;
+  });   
+  
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();  
     if (enquiryEmail.length && enquiryEmail.length && enquiryMessage.length) {
       console.log(enquiryEmail);
       console.log(enquirySubject);
-      console.log(enquiryMessage);
+      console.log(enquiryMessage);  
+      console.log(enquiryToken);    
     }
   }     
   
@@ -85,7 +94,7 @@ function App() {
               Need website/app quotation or any enquiry about Celedonio.Digital? Let us know.
             </p>
             <form action="#" className="space-y-8" onSubmit={handleSubmit}>
-                <div>
+                <div>                    
                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-200 text-left">Your email</label>
                     <input type="email" 
                       value={enquiryEmail}
@@ -119,7 +128,13 @@ function App() {
                       border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 
                       dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 
                       dark:focus:border-primary-500" placeholder="Leave a comment..."></textarea>
-                </div>                                                          
+                </div>
+                <div className="sm:col-span-2 px-[1em] lg:px-[14em]">
+                  <ReCAPTCHA                    
+                    sitekey={ReCaptchaKey}
+                    onChange={setEnquiryToken}
+                  />                 
+                </div>
                 <button type="submit" id="sendBtn" className="
                   py-3 px-5 text-sm font-medium text-center text-gray-500 rounded-lg bg-gray-600  
                   hover:bg-primary-800 hover:text-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 
