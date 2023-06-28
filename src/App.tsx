@@ -11,7 +11,7 @@ function App() {
   const Apikey = process.env.REACT_APP_API_KEY;  
   const ApiUrl = process.env.REACT_APP_API_URL; 
   const ReCaptchaKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY;    
-  const PublicUrl = new URL(process.env.PUBLIC_URL!, window.location.toString());
+  // const PublicUrl = new URL(process.env.PUBLIC_URL!, window.location.toString());
   
   const [enquiryName, setEnquiryName] = useState("");
   const [enquiryEmail, setEnquiryEmail] = useState("");
@@ -24,10 +24,10 @@ function App() {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();  
     if (enquiryEmail.length && enquiryEmail.length && enquiryMessage.length) {      
-      var enquiryUrl = ApiUrl + 'sendmail';      
-      var enquiryData = JSON.stringify([{
+      var enquiryUrl = ApiUrl + 'contact/send-mail';      
+      var enquiryData = JSON.stringify({
         pkey: Apikey,
-        host: PublicUrl.host,
+        host: HostNm,
         body: {
           nme: enquiryName,
           eml: enquiryEmail,
@@ -35,7 +35,7 @@ function App() {
           msg: enquiryMessage,
           tkn: enquiryToken
         }
-      }]);
+      });
       var enquiryCode = btoa(JSON.stringify({
         'addr': IpAddr,
         'host': HostNm
