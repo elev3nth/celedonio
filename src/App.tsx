@@ -1,27 +1,27 @@
-import React, { 
-  useState
-} from 'react';
+import React, { useState } from 'react';
 import ReCAPTCHA from "react-google-recaptcha";
 import CryptoJS from "crypto-js";
 import Axios from 'axios';
 import './App.css';
 
 function App() {
-
+  
+  const IpAddr = process.env.REACT_APP_IP_ADDRESS;
+  const HostNm = process.env.REACT_APP_HOST_NAME;
   const Apikey = process.env.REACT_APP_API_KEY;  
   const ApiUrl = process.env.REACT_APP_API_URL; 
   const ReCaptchaKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY;    
   const PublicUrl = new URL(process.env.PUBLIC_URL!, window.location.toString());
-   
+  
   const [enquiryName, setEnquiryName] = useState("");
   const [enquiryEmail, setEnquiryEmail] = useState("");
   const [enquirySubject, setEnquirySubject] = useState("");
   const [enquiryMessage, setEnquiryMessage] = useState("");   
   const [enquiryToken, setEnquiryToken] = useState((value) => {
     return value;
-  });   
-    
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  });
+   
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();  
     if (enquiryEmail.length && enquiryEmail.length && enquiryMessage.length) {      
       var enquiryUrl = ApiUrl + 'sendmail';      
@@ -36,19 +36,13 @@ function App() {
           tkn: enquiryToken
         }
       }]);
+      var enquiryCode = btoa(JSON.stringify({
+        'addr': IpAddr,
+        'host': HostNm
+      })).toString();
       var enquiryEncr = CryptoJS.AES.encrypt(enquiryData, Apikey).toString();      
       try {
-        Axios.post(enquiryUrl, {
-          payload: enquiryEncr
-        },{
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
-            'Access-Control-Allow-Credentials': false,
-            'Referrer-Host': PublicUrl.host
-          }
-        })
+        await Axios.get(enquiryUrl + '?' + encodeURI(enquiryCode) + '~' + encodeURI(enquiryEncr))
         .then((response) => {
           console.log(response);
         });         
@@ -88,12 +82,12 @@ function App() {
               rel="noopener noreferrer"><i className="fab fa-npm"></i>
           </a>
         </div>
-        <div className="box shrink-0 pt-[1.5em]">
+        <div className="box shrink-0 pt-[0] lg:pt-[1.5em]">
           <img src="/pc.png" alt="slide" className="slide lg:h-auto lg:max-w-full" />
         </div>
-        <div className="box content-center shrink-1 p-[0 auto] lg:p-[0.5em] lg:text-left">
+        <div className="box content-center shrink-1 p-[0 auto] mb-[3em] lg:mb-[0] lg:p-[0.5em] lg:text-left">
           <h1 className="
-            text-[4em] py-[0.2em] pb-[0.5em] leading-[1em] 
+            text-[3em] py-[0.2em] pb-[0.2em] leading-[1em] 
             lg:leading-[0.78em] lg:text-[10em] lg:pb-[0.1em]
           ">
             Digitizing ideas into the web
@@ -124,7 +118,9 @@ function App() {
             </p>
             <form action="#" className="space-y-8" onSubmit={handleSubmit}>
               <div>                    
-                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-200 text-left">Your Fullname</label>
+                    <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-200 text-left">
+                      Your Fullname
+                    </label>
                     <input type="name" 
                       value={enquiryName}
                       onChange={(e) => setEnquiryName(e.target.value)}
@@ -136,7 +132,9 @@ function App() {
                       placeholder="John Doe" required />
                 </div>
                 <div>                    
-                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-200 text-left">Your Email</label>
+                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-200 text-left">
+                      Your Email
+                    </label>
                     <input type="email" 
                       value={enquiryEmail}
                       onChange={(e) => setEnquiryEmail(e.target.value)}
@@ -148,7 +146,9 @@ function App() {
                       placeholder="jonh.doe@email.com" required />
                 </div>
                 <div>
-                    <label htmlFor="subject" className="block mb-2 text-sm font-medium text-gray-200 text-left">Subject</label>
+                    <label htmlFor="subject" className="block mb-2 text-sm font-medium text-gray-200 text-left">
+                      Subject
+                    </label>
                     <input type="text" 
                       value={enquirySubject}
                       onChange={(e) => setEnquirySubject(e.target.value)}
@@ -160,7 +160,9 @@ function App() {
                       placeholder="Let us know how we can help you" required />
                 </div>
                 <div className="sm:col-span-2">
-                    <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-200 text-left">Your Message</label>
+                    <label htmlFor="message" className="block mb-2 text-sm font-medium text-gray-200 text-left">
+                      Your Message
+                    </label>
                     <textarea 
                       value={enquiryMessage}
                       onChange={(e) => setEnquiryMessage(e.target.value)}

@@ -48,18 +48,24 @@ a#contactBtn:hover {
 .slide {
   /* animation: pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite; */
   z-index: 999;
+  pointer-events: none;
+  user-select: none;
 }
 
 .box > h1 {  
   font-family: 'Lato', sans-serif;
   font-weight: 900;  
   letter-spacing: 2.5px;  
-  text-shadow: -2px 0 #0d0d0d, 0 2px #0d0d0d, 1px 0 #0d0d0d, 0 -1px #0d0d0d;  
+  text-shadow: -2px 0 #0d0d0d, 0 2px #0d0d0d, 1px 0 #0d0d0d, 0 -1px #0d0d0d;
+  pointer-events: none;
+  user-select: none;  
 }
 
 .box > h2 {  
   font-family: 'Open Sans', sans-serif;  
   color: #2e2c2c;
+  pointer-events: none;
+  user-select: none;
 }
 
 .box > h2 > span {
