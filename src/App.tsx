@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ReCAPTCHA from "react-google-recaptcha";
 import CryptoJS from "crypto-js";
 import Axios from 'axios';
@@ -58,7 +58,7 @@ function App() {
            else{
             setEnquiryColor('opacity-100 bg-red-50 text-red-800');            
            }
-           setEnquiryRes(response.data.payload.message);               
+           setEnquiryRes(response.data.payload.message.trim());               
           }            
         });         
       } catch (error) {
