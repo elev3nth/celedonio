@@ -110,6 +110,10 @@ i.fa-npm:hover {
   color: #E60023;
 }
 
+.response {
+  border-radius: 0.5em;  
+}
+
 @keyframes fadein {
   0% {
       opacity: 0;

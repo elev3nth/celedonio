@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReCAPTCHA from "react-google-recaptcha";
 import CryptoJS from "crypto-js";
 import Axios from 'axios';
@@ -13,6 +13,8 @@ function App() {
   const ReCaptchaKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY;    
   // const PublicUrl = new URL(process.env.PUBLIC_URL!, window.location.toString());
   
+  const [enquiryColor, setEnquiryColor] = useState("opacity-0");
+  const [enquiryRes, setEnquiryRes] = useState("");
   const [enquiryName, setEnquiryName] = useState("");
   const [enquiryEmail, setEnquiryEmail] = useState("");
   const [enquirySubject, setEnquirySubject] = useState("");
@@ -25,7 +27,7 @@ function App() {
     e.preventDefault();  
     if (enquiryEmail.length && enquiryEmail.length && enquiryMessage.length) {      
       var enquiryUrl = ApiUrl + 'contact/send-mail';      
-      var enquiryData = JSON.stringify({
+      var enquiryData = btoa(JSON.stringify({
         pkey: Apikey,
         host: HostNm,
         body: {
@@ -35,16 +37,29 @@ function App() {
           msg: enquiryMessage,
           tkn: enquiryToken
         }
-      });
+      }));
       var enquiryCode = btoa(JSON.stringify({
         'addr': IpAddr,
         'host': HostNm
       })).toString();
-      var enquiryEncr = CryptoJS.AES.encrypt(enquiryData, Apikey).toString();      
+      var enquiryEncr = CryptoJS.AES.encrypt(enquiryData, Apikey).toString();
       try {
-        await Axios.get(enquiryUrl + '?' + encodeURI(enquiryCode) + '~' + encodeURI(enquiryEncr))
+        await Axios.get(enquiryUrl + '?' + encodeURIComponent(enquiryCode) + '~' + encodeURIComponent(enquiryEncr))
         .then((response) => {
-          console.log(response);
+          if (response.data.success) {
+           if (response.data.payload.success && response.data.payload !== null) {               
+            setEnquiryName('');
+            setEnquiryEmail('');
+            setEnquirySubject('');
+            setEnquiryMessage('');
+            setEnquiryToken(''); 
+            setEnquiryColor('opacity-100 bg-green-50 text-green-800');            
+           }
+           else{
+            setEnquiryColor('opacity-100 bg-red-50 text-red-800');            
+           }
+           setEnquiryRes(response.data.payload.message);               
+          }            
         });         
       } catch (error) {
         console.error(error);
@@ -113,9 +128,14 @@ function App() {
       <div id="contact"className="contact">      
         <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">
             <h2 className="mb-4 text-4xl tracking-tight font-extrabold text-center text-gray-200">Contact Us</h2>
-            <p className="mb-8 lg:mb-16 font-light text-center text-gray-200 md:text-xl">
+            <p className="mb-8 lg:mb-7 font-light text-center text-gray-200 md:text-xl">
               Need website/app quotation or any enquiry about Celedonio.Digital? Let us know.
             </p>
+            <div className={
+              enquiryRes !== null ? 
+              enquiryColor + " response min-h-[1.3em] my-[0.5em] text-[1.5em] py-2.5 center" : 
+              "response min-h-[1.3em] my-[0.5em] text-[1.5em] py-2.5 center" }
+            >{enquiryRes}</div>
             <form action="#" className="space-y-8" onSubmit={handleSubmit}>
               <div>                    
                     <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-200 text-left">
