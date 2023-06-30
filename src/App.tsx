@@ -6,7 +6,6 @@ import './App.css';
 
 function App() {
   
-  const IpAddr = process.env.REACT_APP_IP_ADDRESS;
   const HostNm = process.env.REACT_APP_HOST_NAME;
   const Apikey = process.env.REACT_APP_API_KEY;  
   const ApiUrl = process.env.REACT_APP_API_URL; 
@@ -26,7 +25,7 @@ function App() {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();  
     if (enquiryEmail.length && enquiryEmail.length && enquiryMessage.length) {      
-      var enquiryUrl = ApiUrl + 'contact/send-mail';      
+      var enquiryUrl = ApiUrl + 'contact/send-mail';
       var enquiryData = btoa(JSON.stringify({
         pkey: Apikey,
         host: HostNm,
@@ -38,32 +37,39 @@ function App() {
           tkn: enquiryToken
         }
       }));
-      var enquiryCode = btoa(JSON.stringify({
-        'addr': IpAddr,
-        'host': HostNm
-      })).toString();
+      var enquiryHeaders = {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Access-Control-Allow-Headers': 'Origin, Content-Type, X-Auth-Token, X-Requested-With, Authorization',
+        'Access-Control-Allow-Origin': '*',    
+        'Access-Control-Max-Age': '1000',
+        'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS',
+        'Accept': 'application/json'        
+      }
       var enquiryEncr = CryptoJS.AES.encrypt(enquiryData, Apikey).toString();
       try {
-        await Axios.get(enquiryUrl + '?' + encodeURIComponent(enquiryCode) + '~' + encodeURIComponent(enquiryEncr))
-        .then((response) => {
+        await Axios.post(enquiryUrl, {
+          payload: enquiryEncr  
+        }, {
+          headers: enquiryHeaders
+        }).then((response) => {
           if (response.data.success) {
-           if (response.data.payload.success && response.data.payload !== null) {               
-            setEnquiryName('');
-            setEnquiryEmail('');
-            setEnquirySubject('');
-            setEnquiryMessage('');
-            setEnquiryToken(''); 
-            setEnquiryColor('opacity-100 bg-green-50 text-green-800');            
-           }
-           else{
-            setEnquiryColor('opacity-100 bg-red-50 text-red-800');            
-           }
-           setEnquiryRes(response.data.payload.message.trim());               
-          }            
-        });         
+            if (response.data.payload.success && response.data.payload !== null) {               
+              setEnquiryName('');
+              setEnquiryEmail('');
+              setEnquirySubject('');
+              setEnquiryMessage('');
+              setEnquiryToken(''); 
+              setEnquiryColor('opacity-100 bg-green-50 text-green-800');            
+             }
+             else {
+              setEnquiryColor('opacity-100 bg-red-50 text-red-800');            
+             }
+             setEnquiryRes(response.data.payload.message.trim()); 
+          }
+        })
       } catch (error) {
         console.error(error);
-      }
+      }      
     }
   }     
   
@@ -133,7 +139,7 @@ function App() {
             </p>
             <div className={
               enquiryRes !== null ? 
-              enquiryColor + " response min-h-[1.3em] my-[0.5em] text-[1.5em] py-2.5 center" : 
+              enquiryColor + " response min-h-[1.3em] my-[0.5em] text-[1.2em] lg:text-[1.5em] py-2.5 center" : 
               "response min-h-[1.3em] my-[0.5em] text-[1.5em] py-2.5 center" }
             >{enquiryRes}</div>
             <form action="#" className="space-y-8" onSubmit={handleSubmit}>
@@ -163,7 +169,7 @@ function App() {
                       focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 
                       dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                       dark:focus:ring-primary-500 dark:focus:border-primary-500 dark:shadow-sm-light" 
-                      placeholder="jonh.doe@email.com" required />
+                      placeholder="user@email.com" required />
                 </div>
                 <div>
                     <label htmlFor="subject" className="block mb-2 text-sm font-medium text-gray-200 text-left">
