@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import ReCAPTCHA from "react-google-recaptcha";
 import CryptoJS from "crypto-js";
 import Axios from 'axios';
@@ -11,7 +11,7 @@ function App() {
   const ApiUrl = process.env.REACT_APP_API_URL; 
   const ReCaptchaKey = process.env.REACT_APP_RECAPTCHA_SITE_KEY;    
   // const PublicUrl = new URL(process.env.PUBLIC_URL!, window.location.toString());
-  
+
   const [enquiryColor, setEnquiryColor] = useState("opacity-0");
   const [enquiryRes, setEnquiryRes] = useState("");
   const [enquiryName, setEnquiryName] = useState("");
@@ -20,11 +20,25 @@ function App() {
   const [enquiryMessage, setEnquiryMessage] = useState("");   
   const [enquiryToken, setEnquiryToken] = useState((value) => {
     return value;
-  });
-   
+  });  
+  const [enquiryCsrf, setEnquiryCsrf] = useState(undefined);  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await Axios.post(ApiUrl + 'csrf', { 
+            payload: 'csrf'
+        });
+        setEnquiryCsrf(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+      
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();  
-    if (enquiryEmail.length && enquiryEmail.length && enquiryMessage.length) {      
+    if (enquiryEmail.length && enquiryEmail.length && enquiryMessage.length) {   
       var enquiryUrl = ApiUrl + 'contact/send-mail';
       var enquiryData = btoa(JSON.stringify({
         pkey: Apikey,
@@ -34,7 +48,7 @@ function App() {
           eml: enquiryEmail,
           sbj: enquirySubject,
           msg: enquiryMessage,
-          tkn: enquiryToken
+          tkn: enquiryToken          
         }
       }));
       var enquiryHeaders = {
@@ -43,7 +57,8 @@ function App() {
         'Access-Control-Allow-Origin': '*',    
         'Access-Control-Max-Age': '1000',
         'Access-Control-Allow-Methods': 'GET, PUT, POST, DELETE, OPTIONS',
-        'Accept': 'application/json'        
+        'Accept': 'application/json', 
+        'Csrf-Key': enquiryCsrf       
       }
       var enquiryEncr = CryptoJS.AES.encrypt(enquiryData, Apikey).toString();
       try {
@@ -207,7 +222,8 @@ function App() {
                 <button type="submit" id="sendBtn" className="
                   py-3 px-5 text-sm font-medium text-center text-gray-500 rounded-lg bg-gray-600  
                   hover:bg-primary-800 hover:text-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 
-                  md:w-fit">Send Enquiry</button>                                
+                  md:w-fit">Send Enquiry</button>  
+                <input type="hidden" value={enquiryCsrf} />
             </form>
         </div>        
       </div>             
