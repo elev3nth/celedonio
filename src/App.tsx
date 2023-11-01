@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReCAPTCHA from "react-google-recaptcha";
 import CryptoJS from "crypto-js";
 import Axios from 'axios';
@@ -117,6 +117,10 @@ function App() {
               target="_blank"
               rel="noopener noreferrer"><i className="fab fa-npm"></i>
           </a>
+          <a className="icon text-[30px]"
+              href="#projects"
+              rel="noopener noreferrer"><i className="fa-solid fa-code"></i>
+          </a>
         </div>
         <div className="box shrink-0 pt-[0] lg:pt-[1.5em]">
           <img src="/pc.png" alt="slide" className="slide lg:h-auto lg:max-w-full" />
@@ -145,6 +149,35 @@ function App() {
             lg:text-[1.8em]        
           ">Contact Us</a>
         </div>          
+      </div>
+      <div id="projects"className="projects"> 
+        <h2 className="p-[1em] lg:p-[2em] text-4xl tracking-tight font-extrabold text-center text-gray-200">Celedonio Digital Projects</h2>
+        <div className="py-5 lg:py-5 px-4 lg:m-4 w-full text-center lg:flex lg:flex-wrap lg:justify-center">
+        <div className="my-5 lg:m-3 lg:transition lg:duration-1000 hover:scale-125">
+            <a href="https://celedonio.digital" target="_blank" rel="noopener noreferrer" className="text-white text-lg lg:text-gray-400 hover:text-white">
+              <img src="/projects/celedonio-digital.png" className="object-fill h-48 w-96 rounded-md" />
+              <h3>Celedonio Digital</h3>
+            </a>
+          </div>
+          <div className="my-5 lg:m-3 lg:transition lg:duration-1000 hover:scale-125">
+            <a href="http://cnch.nz" target="_blank" rel="noopener noreferrer" className="text-white text-lg lg:text-gray-400 hover:text-white">
+              <img src="/projects/coffee-news.png" className="object-fill h-48 w-96 rounded-md" />
+              <h3>Coffee News</h3>
+            </a>
+          </div>
+          <div className="my-5 lg:m-3 lg:transition lg:duration-1000 hover:scale-125">
+            <a href="https://fbac.basketball" target="_blank" rel="noopener noreferrer" className="text-white text-lg lg:text-gray-400 hover:text-white">
+              <img src="/projects/fbac.png" className="object-fill h-48 w-96 rounded-md" />
+              <h3>FBA Christchurch</h3>
+            </a>
+          </div>
+          <div className="my-5 lg:m-3 lg:transition lg:duration-1000 hover:scale-125">
+            <a href="https://booking.inghamautomotive.nz" target="_blank" rel="noopener noreferrer" className="text-white text-lg lg:text-gray-400 hover:text-white">
+              <img src="/projects/ingham-booking.png" className="object-fill h-48 w-96 rounded-md" />
+              <h3>Inghamdriven Booking</h3>
+            </a>
+          </div>
+        </div> 
       </div>  
       <div id="contact"className="contact">      
         <div className="py-8 lg:py-16 px-4 mx-auto max-w-screen-md">

@@ -40,6 +40,10 @@ a#contactBtn:hover {
   animation-iteration-count: 1;
   animation-fill-mode: forwards;    
 }
+.projects {
+  min-height: 100vh;
+  background-color: #0b2a49;
+}
 .contact {
   min-height: 100vh;
   background-color: #24292E;
